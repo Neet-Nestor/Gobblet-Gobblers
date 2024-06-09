@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gobblet Gobblers</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Gobblet Gobblers</h1>
     <div id="players-count">Connected Players: 0</div>
-    <div id="role-info">Your role: </div>
-    <div id="status">Waiting for another player...</div>
+    <div id="role-info"></div>
+    <div id="status">Waiting for game to start...</div>
     <div id="game-board"></div>
-    <button id="restart-button" style="display: none;">Restart Game</button>
-
+    <div id="piece-selection">
+        <button class="piece-btn" data-size="small">Small</button>
+        <button class="piece-btn" data-size="medium">Medium</button>
+        <button class="piece-btn" data-size="large">Large</button>
+    </div>
+    <div id="available-pieces"></div>
     <script src="game.js"></script>
 </body>
 </html>
