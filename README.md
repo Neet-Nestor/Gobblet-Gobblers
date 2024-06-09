@@ -2,6 +2,8 @@
 
 Gobblet Gobblers is an enhanced version of the classic Tic-Tac-Toe game that introduces variable piece sizes and stacking mechanics, adding depth and strategy to a familiar format. Players compete to align three of their pieces in a row on a 3x3 board, where each player can "gobble" smaller pieces with larger ones, dynamically changing the board state.
 
+![screenshot](./docs/screenshot.png)
+
 ## Rules
 [Gobblet-Gobblers.pdf](https://themindcafe.com.sg/wp-content/uploads/2018/07/Gobblet-Gobblers.pdf)
 
