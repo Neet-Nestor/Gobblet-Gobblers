@@ -10,9 +10,18 @@ class GobbletGobblers {
         
         this.ws.onopen = () => console.log("Connected to the server");
         this.ws.onmessage = this.handleMessage.bind(this);
+        this.addNewGameButtonListener();
         this.addPieceSelectionListeners();
         this.createBoard();
         this.updateAvailablePiecesDisplay();
+    }
+
+    addNewGameButtonListener() {
+        const newGameButton = document.getElementById('new-game-button');
+        newGameButton.addEventListener('click', () => {
+            this.ws.send(JSON.stringify({ type: 'restart' }));
+            document.getElementById('status').textContent = 'Restarting game...';
+        });
     }
 
     addPieceSelectionListeners() {
@@ -28,6 +37,12 @@ class GobbletGobblers {
     updateAvailablePiecesDisplay() {
         const availablePiecesDiv = document.getElementById('available-pieces');
         availablePiecesDiv.innerHTML = `Available Pieces: <br> Small: ${this.availablePieces.small}, Medium: ${this.availablePieces.medium}, Large: ${this.availablePieces.large}`;
+    }
+    
+    resetBoard() {
+        this.board = Array(3).fill().map(() => Array(3).fill([]));
+        this.createBoard();
+        this.updateAvailablePiecesDisplay();
     }
 
     createBoard() {
@@ -62,6 +77,10 @@ class GobbletGobblers {
         const data = JSON.parse(message.data);
         console.log(data);
         switch (data.type) {
+            case 'reset':
+                this.resetBoard();
+                document.getElementById('status').textContent = `Game restarted. It's now ${this.currentPlayer}'s turn.`;
+                break;
             case 'roleAssignment':
                 this.role = data.role;
                 document.getElementById('role-info').textContent = `Your role: ${this.role}`;

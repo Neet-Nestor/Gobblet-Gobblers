@@ -83,15 +83,15 @@ function checkWin(board) {
   ];
 
   for (const pattern of winPatterns) {
-    console.log(
-      "Checking pattern:",
-      pattern.map(([r, c]) => {
-        const cell = board[r][c];
-        return cell.length > 0
-          ? `${cell[cell.length - 1].player} (${cell[cell.length - 1].size})`
-          : "empty";
-      })
-    );
+    // console.log(
+    //   "Checking pattern:",
+    //   pattern.map(([r, c]) => {
+    //     const cell = board[r][c];
+    //     return cell.length > 0
+    //       ? `${cell[cell.length - 1].player} (${cell[cell.length - 1].size})`
+    //       : "empty";
+    //   })
+    // );
 
     if (
       pattern.every(
@@ -155,6 +155,7 @@ server.on("connection", (ws) => {
 
   ws.on("message", (message) => {
     const data = JSON.parse(message);
+    console.log(data)
     if (
       data.type === "move" &&
       gameState.gameStarted &&
@@ -206,28 +207,34 @@ server.on("connection", (ws) => {
           }
         }
       }
-    } else if (data.type === "restart") {
-      gameState.board = Array(3)
-        .fill()
-        .map(() => Array(3).fill(null));
-      gameState.currentPlayer = "X"; // Optionally switch the starting player on restart
-      gameState.gameStarted = true;
+    } else if (data.type === 'restart') {
+        // Reset the game board and pieces
+        gameState.board = [
+            [[], [], []],
+            [[], [], []],
+            [[], [], []]
+        ];
+        gameState.pieces = {
+            'X': { 'small': 2, 'medium': 2, 'large': 2 },
+            'O': { 'small': 2, 'medium': 2, 'large': 2 }
+        };
+        gameState.currentPlayer = 'X';  // Optionally, alternate who starts the game
+        gameState.gameStarted = true;
 
-      players.forEach((player) => {
-        player.send(
-          JSON.stringify({
-            type: "reset",
+        // Notify all clients that the game has been reset
+        broadcastToAll({
+            type: 'reset',
             board: gameState.board,
-            currentPlayer: gameState.currentPlayer,
-          })
-        );
-      });
+            currentPlayer: gameState.currentPlayer
+        });
     }
   });
 
   ws.on("close", () => {
     players = players.filter((player) => player !== ws);
-    delete gameState.playerRoles[ws];
+    if (ws in gameState.playerRoles) {
+        delete gameState.playerRoles[ws];
+    }
     if (players.length < 2) {
       gameState.gameStarted = false;
     }

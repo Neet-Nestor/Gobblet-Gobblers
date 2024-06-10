@@ -65,18 +65,21 @@ body {
 }
 
 #game-board {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
+#players-count {
+    margin-top: 20px;
+}
 
 #status {
-    margin-top: 10px;
-}
-
-#restart-button {
     margin-top: 20px;
 }
 
 #piece-selection {
+    margin-top: 20px;
+}
+
+#available-pieces {
     margin-top: 20px;
 }
