@@ -45,13 +45,17 @@ class GobbletGobblers {
     availablePiecesDiv.innerHTML = `Available Pieces: <br> Small: ${this.availablePieces.small}, Medium: ${this.availablePieces.medium}, Large: ${this.availablePieces.large}`;
   }
 
-  resetBoard() {
+  resetGame() {
     this.board = [
       [[], [], []],
       [[], [], []],
       [[], [], []],
     ];
     this.createBoard();
+    this.currentPlayer = "X";
+    this.role = null;
+    this.selectedSize = null;
+    this.availablePieces = { small: 2, medium: 2, large: 2 };
     this.updateAvailablePiecesDisplay();
   }
 
@@ -103,7 +107,7 @@ class GobbletGobblers {
     console.log(data);
     switch (data.type) {
       case "reset":
-        this.resetBoard();
+        this.resetGame();
         document.getElementById(
           "status"
         ).textContent = `Game restarted. It's now ${this.currentPlayer}'s turn.`;
