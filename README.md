@@ -6,8 +6,6 @@ Gobblet Gobblers is an enhanced version of the classic Tic-Tac-Toe game that int
 https://github.com/Neet-Nestor/Gobblet-Gobblers/assets/23090573/20ba2d54-c860-4bb8-9b01-6a0ae548670c
 
 
-**Live Game** (Limit 2 players at a time): http://game.neet.coffee/
-
 ## Rules
 [Gobblet-Gobblers.pdf](https://themindcafe.com.sg/wp-content/uploads/2018/07/Gobblet-Gobblers.pdf)
 
