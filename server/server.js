@@ -14,6 +14,7 @@ let gameState = {
     X: { small: 2, medium: 2, large: 2 },
     O: { small: 2, medium: 2, large: 2 },
   },
+  playerRoles: new Map(),
 };
 
 const sizeOrder = {
@@ -22,8 +23,6 @@ const sizeOrder = {
     'large': 3
 };
 
-// Use a Map to handle player roles
-let playerRoles = new Map();
 
 function broadcastToAll(data) {
   players.forEach((player) => {
@@ -113,8 +112,8 @@ function checkWin(board) {
 
 // Function to send available pieces to each player
 function updatePlayerPieces(player) {
-  if (playerRoles.has(player)) {
-    const role = playerRoles.get(player);
+  if (gameState.playerRoles.has(player)) {
+    const role = gameState.playerRoles.get(player);
     const pieces = gameState.pieces[role];
     player.send(
       JSON.stringify({
@@ -133,7 +132,7 @@ server.on("connection", (ws) => {
 
   players.push(ws);
   const role = players.length === 1 ? "X" : "O";
-  playerRoles.set(ws, role);
+  gameState.playerRoles.set(ws, role);
   ws.send(JSON.stringify({ type: "roleAssignment", role: role }));
   console.log("connection", players.length);
 
@@ -143,7 +142,7 @@ server.on("connection", (ws) => {
       player.send(
         JSON.stringify({
           type: "start",
-          role: playerRoles.get(player),
+          role: gameState.playerRoles.get(player),
           currentPlayer: gameState.currentPlayer,
         })
       );
@@ -159,7 +158,7 @@ server.on("connection", (ws) => {
     if (
       data.type === "move" &&
       gameState.gameStarted &&
-      playerRoles.get(ws) === gameState.currentPlayer
+      gameState.playerRoles.get(ws) === gameState.currentPlayer
     ) {
       const { row, col, size } = data;
       console.log(data)
@@ -232,9 +231,7 @@ server.on("connection", (ws) => {
 
   ws.on("close", () => {
     players = players.filter((player) => player !== ws);
-    if (ws in gameState.playerRoles) {
-        delete gameState.playerRoles[ws];
-    }
+    gameState.playerRoles.delete(ws);
     if (players.length < 2) {
       gameState.gameStarted = false;
     }
