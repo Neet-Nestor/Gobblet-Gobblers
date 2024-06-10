@@ -10,7 +10,7 @@ class GobbletGobblers {
     this.role = null;
     this.selectedSize = null;
     this.availablePieces = { small: 2, medium: 2, large: 2 };
-    this.ws = new WebSocket("ws://localhost:8080");
+    this.ws = new WebSocket(`ws://${window.location.href}:8080`);
 
     this.ws.onopen = () => console.log("Connected to the server");
     this.ws.onmessage = this.handleMessage.bind(this);
